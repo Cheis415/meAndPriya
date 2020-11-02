@@ -4,16 +4,48 @@
 
 class User {
 
+  // constructor(username, password, first_name, last_name, phone) {
+  //   this.username = username;
+  //   this.password =
+
+  // }
+
   /** Register new user. Returns
    *    {username, password, first_name, last_name, phone}
    */
 
   static async register({ username, password, first_name, last_name, phone }) {
+    try {
+      password = hashedPassword = await bcrypt.hash(
+        password, BCRYPT_WORK_FACTOR);
+        const result = await db.query(
+          `INSERT INTO users (username, password, first_name, last_name, phone)
+           VALUES ($1, $2, $3, $4, $5)
+           RETURNING username, password, first_name, last_name, phone`,
+        [username, password, first_name, last_name, phone]);
+        return res.json(result.rows[0]);
+    } catch (err) {
+      console.error("invalid input", err);
+    }
   }
 
   /** Authenticate: is username/password valid? Returns boolean. */
 
   static async authenticate(username, password) {
+    try {
+      
+      const result = await db.query(
+        "SELECT password FROM users WHERE username = $1",
+        [username]);
+      let user = result.rows[0];
+  
+      if (user) {
+        return await bcrypt.compare(password, user.password)
+      }
+      throw new UnauthorizedError("Invalid user/password");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /** Update last_login_at for user */
