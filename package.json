@@ -1,7 +1,7 @@
 {
   "name": "messagely",
   "version": "1.1.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest -i",
     "start": "node server.js"
@@ -20,5 +20,13 @@
     "supertest": "^5.0.0-0"
   },
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cheis415/meAndPriya.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Cheis415/meAndPriya/issues"
+  },
+  "homepage": "https://github.com/Cheis415/meAndPriya#readme",
   "description": ""
 }
