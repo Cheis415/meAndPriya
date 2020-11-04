@@ -1,6 +1,6 @@
 "use strict";
 
-const { NotFoundError, UnauthorizedError } = require("../expressError");
+const { NotFoundError, UnauthorizedError, BadRequestError } = require("../expressError");
 
 const bcrypt = require("bcrypt");
 
@@ -44,13 +44,12 @@ class User {
         "SELECT password FROM users WHERE username = $1",
         [username]);
       let user = result.rows[0];
-      console.log(username);
       if (user) {
         return await bcrypt.compare(password, user.password)
       }
-      throw new UnauthorizedError("Invalid user/password");
+      throw new BadRequestError("Invalid user/password");
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
